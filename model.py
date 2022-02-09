@@ -49,3 +49,26 @@ validation_generator = test_datagen.flow_from_directory(
 labels = (train_generator.class_indices)
 labels = dict((v,k) for k,v in labels.items())
 
+model = Sequential([
+    Conv2D(filters=32, kernel_size=3, padding='same', activation='relu', input_shape=(300, 300, 3)),
+    MaxPooling2D(pool_size=2),
+
+    Conv2D(filters=64, kernel_size=3, padding='same', activation='relu'),
+    MaxPooling2D(pool_size=2),
+
+    Conv2D(filters=32, kernel_size=3, padding='same', activation='relu'),
+    MaxPooling2D(pool_size=2),
+
+    Conv2D(filters=32, kernel_size=3, padding='same', activation='relu'),
+    MaxPooling2D(pool_size=2),
+
+    Flatten(),
+
+    Dense(64, activation='relu'),
+
+    Dense(6, activation='softmax')
+])
+
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
+
+
