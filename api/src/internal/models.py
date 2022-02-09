@@ -14,7 +14,7 @@ class WasteCategory(models.Model):
     area = models.CharField(max_length=50, choices=Area.choices())
 
 
-class Target(models.Model):
+class Location(models.Model):
     address = models.CharField(max_length=255)
     instructions = models.TextField(blank=True, null=True)
     category = models.ForeignKey(WasteCategory, on_delete=models.SET_NULL, null=True)

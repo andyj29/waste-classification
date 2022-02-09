@@ -49,8 +49,6 @@ validation_generator = test_datagen.flow_from_directory(
 
 labels = (train_generator.class_indices)
 labels = dict((v,k) for k,v in labels.items())
-print('test')
-print(labels)
 
 model = Sequential([
     Conv2D(filters=32, kernel_size=3, padding='same', activation='relu', input_shape=(300, 300, 3)),
@@ -85,6 +83,8 @@ test_x, test_y = validation_generator.__getitem__(1)
 
 preds = model.predict(test_x)
 
+
+model.save('saved_model.h5')
 
 plt.figure(figsize=(16, 16))
 for i in range(16):
