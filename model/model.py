@@ -1,9 +1,12 @@
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 from keras.preprocessing.image import ImageDataGenerator, load_img, img_to_array, array_to_img
 from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 from keras.models import Sequential
 from PIL import Image
+from IPython.display import display
+
 
 
 import glob, os, random
@@ -66,9 +69,39 @@ model = Sequential([
 
     Dense(64, activation='relu'),
 
-    Dense(6, activation='softmax')
+    Dense(12, activation='softmax')
 ])
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
 
+
+model.fit(train_generator, epochs=20, validation_data=validation_generator)
+model.fit(train_generator, epochs=20, validation_data=validation_generator)
+model.fit(train_generator, epochs=20, validation_data=validation_generator)
+model.fit(train_generator, epochs=20, validation_data=validation_generator)
+model.fit(train_generator, epochs=20, validation_data=validation_generator)
+
+test_x, test_y = validation_generator.__getitem__(1)
+
+preds = model.predict(test_x)
+
+
+model.save('saved_model.h5')
+
+plt.figure(figsize=(16, 16))
+for i in range(16):
+    plt.subplot(4, 4, i+1)
+    plt.title('pred:%s / truth:%s' % (labels[np.argmax(preds[i])], labels[np.argmax(test_y[i])]))
+    plt.imshow(test_x[i])
+    plt.show()
+
+predicted= []
+actual = []
+for i in range(16):
+    predicted.append(labels[np.argmax(preds[i])])
+    actual.append(labels[np.argmax(test_y[i])])
+
+df = pd.DataFrame(predicted, columns=["predicted"])
+df["actual"] = actual
+display(df)
 
