@@ -6,6 +6,7 @@ class AutoNum(enum.Enum):
         value = len(cls.__members__)
         obj = object.__new__(cls)
         obj._value_ = value
+        return obj
 
 
 class Label(AutoNum):
@@ -24,6 +25,10 @@ class Label(AutoNum):
     @classmethod
     def choices(cls):
         return tuple((i.name, i.value) for i in cls)
+
+    @classmethod
+    def to_list(cls):
+        return list(i.name for i in cls)
 
 
 class Area(AutoNum):

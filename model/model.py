@@ -31,7 +31,7 @@ test_datagen = ImageDataGenerator(
 
 train_generator = train_datagen.flow_from_directory(
     base_path,
-    target_size=(300, 300),
+    target_size=(224, 224),
     batch_size=16,
     class_mode='categorical',
     subset='training',
@@ -40,7 +40,7 @@ train_generator = train_datagen.flow_from_directory(
 
 validation_generator = test_datagen.flow_from_directory(
     base_path,
-    target_size=(300, 300),
+    target_size=(224, 224),
     batch_size=16,
     class_mode='categorical',
     subset='validation',
@@ -51,21 +51,34 @@ labels = (train_generator.class_indices)
 labels = dict((v,k) for k,v in labels.items())
 
 model = Sequential([
-    Conv2D(filters=32, kernel_size=3, padding='same', activation='relu', input_shape=(300, 300, 3)),
-    MaxPooling2D(pool_size=2),
+    Conv2D(filters=64, kernel_size=(3,3), padding='same', activation='relu', input_shape=(224, 224, 3)),
+    Conv2D(filters=64, kernel_size=(3,3), padding='same', activation='relu'),
+    MaxPooling2D(pool_size=(2,2), strides=(2,2)),
 
-    Conv2D(filters=64, kernel_size=3, padding='same', activation='relu'),
-    MaxPooling2D(pool_size=2),
+    Conv2D(filters=128, kernel_size=(3,3), padding='same', activation='relu'),
+    Conv2D(filters=128, kernel_size=(3,3), padding='same', activation='relu'),
+    MaxPooling2D(pool_size=(2,2), strides=(2,2)),
 
-    Conv2D(filters=32, kernel_size=3, padding='same', activation='relu'),
-    MaxPooling2D(pool_size=2),
+    Conv2D(filters=256, kernel_size=(3,3), padding='same', activation='relu'),
+    Conv2D(filters=256, kernel_size=(3,3), padding='same', activation='relu'),
+    Conv2D(filters=256, kernel_size=(3,3), padding='same', activation='relu'),
+    MaxPooling2D(pool_size=(2,2), strides=(2,2)),
 
-    Conv2D(filters=32, kernel_size=3, padding='same', activation='relu'),
-    MaxPooling2D(pool_size=2),
+    Conv2D(filters=512, kernel_size=(3,3), padding='same', activation='relu'),
+    Conv2D(filters=512, kernel_size=(3,3), padding='same', activation='relu'),
+    Conv2D(filters=512, kernel_size=(3,3), padding='same', activation='relu'),
+    MaxPooling2D(pool_size=(2,2), strides=(2,2)),
+
+    Conv2D(filters=512, kernel_size=(3,3), padding='same', activation='relu'),
+    Conv2D(filters=512, kernel_size=(3,3), padding='same', activation='relu'),
+    Conv2D(filters=512, kernel_size=(3,3), padding='same', activation='relu'),
+    MaxPooling2D(pool_size=(2,2), strides=(2,2)),
 
     Flatten(),
 
-    Dense(64, activation='relu'),
+    Dense(4096, activation='relu'),
+
+    Dense(4096, activation='relu'),
 
     Dense(12, activation='softmax')
 ])
@@ -73,18 +86,15 @@ model = Sequential([
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
 
 
-model.fit(train_generator, epochs=20, validation_data=validation_generator)
-model.fit(train_generator, epochs=20, validation_data=validation_generator)
-model.fit(train_generator, epochs=20, validation_data=validation_generator)
-model.fit(train_generator, epochs=20, validation_data=validation_generator)
-model.fit(train_generator, epochs=20, validation_data=validation_generator)
+model.fit(train_generator, epochs=40, validation_data=validation_generator)
+
 
 test_x, test_y = validation_generator.__getitem__(1)
 
 preds = model.predict(test_x)
 
 
-model.save('saved_model.h5')
+model.save('saved_model')
 
 plt.figure(figsize=(16, 16))
 for i in range(16):
