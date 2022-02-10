@@ -56,20 +56,16 @@ model = Sequential([
     MaxPooling2D(pool_size=(2,2), strides=(2,2)),
 
     Conv2D(filters=128, kernel_size=(3,3), padding='same', activation='relu'),
-    Conv2D(filters=128, kernel_size=(3,3), padding='same', activation='relu'),
     MaxPooling2D(pool_size=(2,2), strides=(2,2)),
 
     Conv2D(filters=256, kernel_size=(3,3), padding='same', activation='relu'),
     Conv2D(filters=256, kernel_size=(3,3), padding='same', activation='relu'),
-    Conv2D(filters=256, kernel_size=(3,3), padding='same', activation='relu'),
     MaxPooling2D(pool_size=(2,2), strides=(2,2)),
 
     Conv2D(filters=512, kernel_size=(3,3), padding='same', activation='relu'),
     Conv2D(filters=512, kernel_size=(3,3), padding='same', activation='relu'),
-    Conv2D(filters=512, kernel_size=(3,3), padding='same', activation='relu'),
     MaxPooling2D(pool_size=(2,2), strides=(2,2)),
 
-    Conv2D(filters=512, kernel_size=(3,3), padding='same', activation='relu'),
     Conv2D(filters=512, kernel_size=(3,3), padding='same', activation='relu'),
     Conv2D(filters=512, kernel_size=(3,3), padding='same', activation='relu'),
     MaxPooling2D(pool_size=(2,2), strides=(2,2)),
