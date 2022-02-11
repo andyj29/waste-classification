@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from keras.preprocessing.image import ImageDataGenerator
 from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 from keras.models import Sequential
+from keras.callbacks import EarlyStopping, ModelCheckpoint
 from IPython.display import display
 
 
@@ -50,9 +51,10 @@ validation_generator = test_datagen.flow_from_directory(
 labels = (train_generator.class_indices)
 labels = dict((v,k) for k,v in labels.items())
 
+print(labels)
+
 model = Sequential([
     Conv2D(filters=64, kernel_size=(3,3), padding='same', activation='relu', input_shape=(224, 224, 3)),
-    Conv2D(filters=64, kernel_size=(3,3), padding='same', activation='relu'),
     MaxPooling2D(pool_size=(2,2), strides=(2,2)),
 
     Conv2D(filters=128, kernel_size=(3,3), padding='same', activation='relu'),
@@ -81,18 +83,18 @@ model = Sequential([
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
 
+es = EarlyStopping(monitor='val_accuracy', mode='max', verbose=1, patience=20)
 
-model.fit(train_generator, epochs=40, validation_data=validation_generator)
+checkpoint = ModelCheckpoint('vgg11_model', monitor='val_accuracy', mode='max', save_best_only=True, save_weights_only=False)
 
+model.fit(train_generator, epochs=1000, validation_data=validation_generator, callbacks=[checkpoint,es])
 
 test_x, test_y = validation_generator.__getitem__(1)
 
 preds = model.predict(test_x)
 
-
-model.save('saved_model')
-
 plt.figure(figsize=(16, 16))
+
 for i in range(16):
     plt.subplot(4, 4, i+1)
     plt.title('pred:%s / truth:%s' % (labels[np.argmax(preds[i])], labels[np.argmax(test_y[i])]))
