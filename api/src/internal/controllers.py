@@ -33,13 +33,17 @@ class ClassifyImage(APIView):
             raise ParseError('Request has no longitude/latitude')
         
         location = get_area_from_lat_long(latitude, longitude)
-        print(location)
+
  
         if is_in_gta(location):
             queryset = Location.objects.filter(area=location, category=category)
             loc_list = LocationSerializer(queryset, many=True)
         else:
-            raise NotFound('Location is out of range')
+            raise NotFound({
+                'prediction': prediction,
+                'locations':'Our service only works inside the GTA'
+
+            })
 
         data = {
             'prediction': prediction,
