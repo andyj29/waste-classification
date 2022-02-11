@@ -5,7 +5,6 @@ from rest_framework import status
 from .serializers import LocationSerializer, WasteCategorySerializer
 from .models import Image, Location, WasteCategory
 from .services import classify_image, get_area_from_lat_long, is_in_gta
-from .constants import Label, Area
 
 
 class ClassifyImage(APIView):
@@ -19,10 +18,8 @@ class ClassifyImage(APIView):
         image = Image.objects.create(image=file)
 
         prediction = classify_image(image.get_url)
-        x = prediction['label']
-        print(x)
 
-        category = WasteCategory.objects.filter(type=x).first()
+        category = WasteCategory.objects.filter(type=prediction['label']).first()
 
         category_serializer = WasteCategorySerializer(category)
 
@@ -34,15 +31,14 @@ class ClassifyImage(APIView):
         
         location = get_area_from_lat_long(latitude, longitude)
 
- 
         if is_in_gta(location):
             queryset = Location.objects.filter(area=location, category=category)
             loc_list = LocationSerializer(queryset, many=True)
         else:
             raise NotFound({
                 'prediction': prediction,
-                'locations':'Our service only works inside the GTA'
-
+                'category': category_serializer.data,
+                'locations':'Our location service only works inside the GTA'
             })
 
         data = {
