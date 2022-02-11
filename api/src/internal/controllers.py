@@ -1,4 +1,5 @@
 from rest_framework.views import APIView
+from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.exceptions import ParseError, NotFound
 from rest_framework import status
@@ -48,3 +49,26 @@ class ClassifyImage(APIView):
         }
 
         return Response(data, status=status.HTTP_202_ACCEPTED)
+
+
+class LocationListCreate(generics.ListAPIView):
+    serializer_class = LocationSerializer
+
+    def get_queryset(self):
+        return Location.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        try:
+            category_list = self.request.data['category']
+        except KeyError:
+            raise ParseError('Request has no category field')
+
+        queryset = WasteCategory.objects.filter(type__in=category_list)
+
+        serializer = LocationSerializer(data=self.request.data)
+
+        if serializer.is_valid():
+            serializer.save(category=queryset)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
