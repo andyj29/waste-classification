@@ -14,5 +14,4 @@ class ClassifyImage(APIView):
             raise ParseError('Request has no image file')
         image = Image.objects.create(image=file)
         prediction = classify_image(image.get_url)
-        data = {'label': prediction}
-        return Response(data, status=status.HTTP_202_ACCEPTED)
+        return Response(prediction, status=status.HTTP_202_ACCEPTED)

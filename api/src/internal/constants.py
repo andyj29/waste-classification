@@ -19,6 +19,7 @@ class Label(AutoNum):
     metal = ()
     paper = ()
     plastic = ()
+    shoes = ()
     trash = ()
     white_glass = ()
 

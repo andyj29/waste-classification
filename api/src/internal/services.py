@@ -20,10 +20,21 @@ def load_pic(path):
 
 def classify_image(img_path):
     data = load_pic(img_path)
-    prediction = model.predict([[data]])
+    prediction = model.predict(data)
     label = labels[np.argmax(prediction)]
+    
+    probabilities = prediction[0][np.argmax(prediction)]
+    response = {
+        'label': label,
+        'prob': probabilities
+    }
+
     print("----TEST----")
     print(np.argmax(prediction))
+    print(labels)
 
-    return label
+    for x in prediction:
+        print(str(x))
+
+    return response
 
