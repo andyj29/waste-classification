@@ -33,7 +33,7 @@ test_datagen = ImageDataGenerator(
 train_generator = train_datagen.flow_from_directory(
     base_path,
     target_size=(224, 224),
-    batch_size=16,
+    batch_size=32,
     class_mode='categorical',
     subset='training',
     seed=0
@@ -42,7 +42,7 @@ train_generator = train_datagen.flow_from_directory(
 validation_generator = test_datagen.flow_from_directory(
     base_path,
     target_size=(224, 224),
-    batch_size=16,
+    batch_size=32,
     class_mode='categorical',
     subset='validation',
     seed=0
@@ -83,9 +83,9 @@ model = Sequential([
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
 
-es = EarlyStopping(monitor='val_accuracy', mode='max', verbose=1, patience=20)
+es = EarlyStopping(monitor='val_acc', mode='max', verbose=1, patience=20)
 
-checkpoint = ModelCheckpoint('vgg11_model', monitor='val_accuracy', mode='max', save_best_only=True, save_weights_only=False)
+checkpoint = ModelCheckpoint('vgg11_model', monitor='val_acc', mode='max', save_best_only=True, save_weights_only=False)
 
 model.fit(train_generator, epochs=1000, validation_data=validation_generator, callbacks=[checkpoint,es])
 
