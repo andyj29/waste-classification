@@ -17,10 +17,11 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
-from src.internal.controllers import ClassifyImage, LocationListCreate
+from src.internal.controllers import ClassifyImage, LocationListCreate, WasteCategoryListCreate
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('predict/', ClassifyImage.as_view()),
     path('locations/', LocationListCreate.as_view()),
+    path('categories/', WasteCategoryListCreate.as_view())
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

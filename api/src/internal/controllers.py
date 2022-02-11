@@ -72,3 +72,10 @@ class LocationListCreate(generics.ListAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class WasteCategoryListCreate(generics.ListCreateAPIView):
+    serializer_class = WasteCategorySerializer
+    
+    def get_queryset(self):
+        return WasteCategory.objects.all()
