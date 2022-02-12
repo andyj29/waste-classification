@@ -132,4 +132,13 @@ class LocationDetail(generics.RetrieveUpdateDestroyAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class WasteCategoryDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = WasteCategorySerializer
+    
+    def get_object(self):
+        obj = get_object_or_404(WasteCategory, pk=self.kwargs['id'])
+        return obj
+
+
+
 
