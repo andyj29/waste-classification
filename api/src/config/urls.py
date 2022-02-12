@@ -21,7 +21,8 @@ from src.internal.controllers import (
     ClassifyImage,
     LocationListCreate,
     WasteCategoryListCreate,
-    LocationDetail
+    LocationDetail,
+    WasteCategoryDetail
 )
 
 urlpatterns = [
@@ -30,4 +31,5 @@ urlpatterns = [
     path('locations/', LocationListCreate.as_view()),
     path('categories/', WasteCategoryListCreate.as_view()),
     path('locations/<str:id>/', LocationDetail.as_view()),
+    path('categories/<str:id>/', WasteCategoryDetail.as_view())
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
