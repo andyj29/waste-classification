@@ -2,12 +2,13 @@ import numpy as np
 from keras.preprocessing import image
 from geopy.geocoders import Nominatim
 from src.config.__init__ import model
+from src.config.settings import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 from PIL import Image
 from .constants import Label, Area
 import io
 import boto3
 
-s3 = boto3.resource('s3', aws_access_key_id='AKIA4Q5D26P2PGZNB37K', aws_secret_access_key='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',region_name='ca-central-1')
+s3 = boto3.resource('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY,region_name='ca-central-1')
 bucket = s3.Bucket('2022hacks')
 
 
