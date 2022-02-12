@@ -9,4 +9,4 @@
 ### Features:
 ✔️  Image classification into 12 categories
 
-✔️  REST APIs  
+✔️  Base on user longitude & latitude, API provides a list of recycling locations in the user area  

@@ -1,11 +1,14 @@
-import os
 import numpy as np
-import tensorflow as tf
 from keras.preprocessing import image
 from geopy.geocoders import Nominatim
 from src.config.__init__ import model
-from src.config.settings import BASE_DIR
+from PIL import Image
 from .constants import Label, Area
+import io
+import boto3
+
+s3 = boto3.resource('s3', aws_access_key_id='AKIA4Q5D26P2PGZNB37K', aws_secret_access_key='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',region_name='ca-central-1')
+bucket = s3.Bucket('2022hacks')
 
 
 labels = Label.to_list()
@@ -16,9 +19,18 @@ geolocator = Nominatim(user_agent="geoapiExercises")
 
 
 def load_pic(path):
-    file_path = os.path.join(BASE_DIR, ''.join(path.split('/', 1)))
-    loaded_image = image.load_img(file_path, target_size=(300,300))
-    matrix = image.img_to_array(loaded_image)/255
+    s3_path = path.split('.com/')
+    print(s3_path[1])
+    print(s3_path)
+    obj = bucket.Object(s3_path[1])
+    print(obj)
+    file_stream = io.BytesIO()
+    obj.download_fileobj(file_stream)
+    img = Image.open(file_stream)
+    
+    resized_img = np.resize(img,(300,300,3))
+    print("HELLO")
+    matrix = image.img_to_array(resized_img)/255
     matrix = np.reshape(matrix,(1, 300, 300, 3))
 
     return matrix

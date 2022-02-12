@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-d62rqgj7vjui57&ye2v5a#ky-xc8h%4v^_6y9)g_jy$7(tvy)q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,16 +39,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    "corsheaders",
+    'corsheaders',
+    'storages',
 
     'src.internal'
 
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -84,8 +85,12 @@ WSGI_APPLICATION = 'src.config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'wasteclassifier',
+        'USER': 'wasteclassifier',
+        'PASSWORD': 'MinhPhong296',
+        'HOST': 'database-1.c9xyqfhyyfie.ca-central-1.rds.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
@@ -133,3 +138,18 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AWS_QUERYSTRING_AUTH = False
+
+AWS_S3_FILE_OVERWRITE = False
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+AWS_ACCESS_KEY_ID = 'AKIA4Q5D26P2PGZNB37K'
+
+AWS_SECRET_ACCESS_KEY = '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'
+
+AWS_STORAGE_BUCKET_NAME = '2022hacks'
+
+if os.getcwd() == '/app':
+    DEBUG = False
