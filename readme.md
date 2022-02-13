@@ -6,7 +6,25 @@
 
 ✔️  Django
 
+✔️  Postgres
+
+✔️  AWS S3
+
+✔️  AWS RDS
+
+✔️  Heroku
+
 ### Features:
 ✔️  Image classification into 12 categories
 
-✔️  Base on user longitude & latitude, API provides a list of recycling locations in the user area  
+✔️  Based on user longitude & latitude, API provides a list of recycling locations for the 
+
+    predicted label in the user area if it's recyclable
+
+### ➖ API is available at: [https://sustainability-2022-hacks.herokuapp.com/predict/](https://sustainability-2022-hacks.herokuapp.com/predict/)
+
+### ➖ Request body: 
+        
+        ➕ file    :    ?image
+        ➕ long    :    ?longitude
+        ➕ lat     :    ?latitude
