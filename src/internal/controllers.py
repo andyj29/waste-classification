@@ -11,18 +11,14 @@ from .services import classify_image, get_area_from_lat_long, is_in_gta
 
 class ClassifyImage(APIView):
     def post(self, request, *args, **kwargs):
-
         try:
             file = self.request.data['file']
         except KeyError:
             raise ParseError('Request has no image file')
 
         image = Image.objects.create(image=file)
-
         prediction = classify_image(image.get_url)
-
         category = WasteCategory.objects.filter(type=prediction['label']).first()
-
         category_serializer = WasteCategorySerializer(category)
 
         try:
@@ -65,7 +61,6 @@ class LocationListCreate(generics.ListAPIView):
             raise ParseError('Request has no category field')
 
         queryset = WasteCategory.objects.filter(type__in=category_list)
-
         serializer = LocationSerializer(data=self.request.data)
 
         if serializer.is_valid():
@@ -96,9 +91,7 @@ class LocationDetail(generics.RetrieveUpdateDestroyAPIView):
             raise ParseError('Request has no category field')
 
         queryset = WasteCategory.objects.filter(type__in=category_list)
-
         obj = self.get_object()
-
         serializer = LocationSerializer(obj, data=request.data)
 
         if serializer.is_valid():
@@ -108,7 +101,6 @@ class LocationDetail(generics.RetrieveUpdateDestroyAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request, *args, **kwargs):
-        
         update_category = True
 
         try:
@@ -118,7 +110,6 @@ class LocationDetail(generics.RetrieveUpdateDestroyAPIView):
             update_category = False
 
         obj = self.get_object()
-
         serializer = LocationSerializer(obj, data=request.data, partial=True)
 
         if serializer.is_valid():
