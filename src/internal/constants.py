@@ -57,5 +57,5 @@ class Area(enum.Enum):
 
     @classmethod
     def to_list(cls):
-        return list(i.name for i in cls)
+        return list(i.value for i in cls)
 

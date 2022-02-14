@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.response import Response
-from rest_framework.exceptions import ParseError, NotFound
+from rest_framework.exceptions import ParseError
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from .serializers import LocationSerializer, WasteCategorySerializer
@@ -16,8 +16,10 @@ class ClassifyImage(APIView):
             if len(file) != 0:
                 image = Image.objects.create(image=file)
             prediction = classify_image(image.get_url)
-        except (KeyError, ValueError, UnboundLocalError):
-            raise ParseError('Request has no image file')
+        except KeyError: 
+            raise ParseError('This field is required: file')
+        except UnboundLocalError:
+            raise ParseError('Server can not read the image')
 
         category = WasteCategory.objects.filter(type=prediction['label']).first()
         category_serializer = WasteCategorySerializer(category)
@@ -27,7 +29,7 @@ class ClassifyImage(APIView):
             longitude = self.request.data['long']
             location = get_area_from_lat_long(latitude, longitude)
         except (KeyError, ValueError):
-            raise NotFound({
+            raise ParseError({
                 'prediction': prediction,
                 'category': category_serializer.data,
                 'locations': 'Request has no or invalid longitude/latitude. Include it for our location service'
@@ -37,7 +39,7 @@ class ClassifyImage(APIView):
             queryset = Location.objects.filter(area=location, category=category)
             loc_list = LocationSerializer(queryset, many=True)
         else:
-            raise NotFound({
+            raise ParseError({
                 'prediction': prediction,
                 'category': category_serializer.data,
                 'locations':'Our location service only works inside the GTA'
