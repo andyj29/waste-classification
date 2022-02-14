@@ -13,21 +13,25 @@ class ClassifyImage(APIView):
     def post(self, request, *args, **kwargs):
         try:
             file = self.request.data['file']
-        except KeyError:
+            if len(file) != 0:
+                image = Image.objects.create(image=file)
+            prediction = classify_image(image.get_url)
+        except (KeyError, ValueError, UnboundLocalError):
             raise ParseError('Request has no image file')
 
-        image = Image.objects.create(image=file)
-        prediction = classify_image(image.get_url)
         category = WasteCategory.objects.filter(type=prediction['label']).first()
         category_serializer = WasteCategorySerializer(category)
 
         try:
             latitude = self.request.data['lat']
             longitude = self.request.data['long']
-        except KeyError:
-            raise ParseError('Request has no longitude/latitude')
-        
-        location = get_area_from_lat_long(latitude, longitude)
+            location = get_area_from_lat_long(latitude, longitude)
+        except (KeyError, ValueError):
+            raise NotFound({
+                'prediction': prediction,
+                'category': category_serializer.data,
+                'locations': 'Request has no or invalid longitude/latitude. Include it for our location service'
+            })
 
         if is_in_gta(location):
             queryset = Location.objects.filter(area=location, category=category)
@@ -57,7 +61,7 @@ class LocationListCreate(generics.ListAPIView):
     def post(self, request, *args, **kwargs):
         try:
             category_list = self.request.data['category']
-        except KeyError:
+        except (KeyError, ValueError):
             raise ParseError('Request has no category field')
 
         queryset = WasteCategory.objects.filter(type__in=category_list)
@@ -87,7 +91,7 @@ class LocationDetail(generics.RetrieveUpdateDestroyAPIView):
     def put(self, request, *args, **kwargs):
         try:
             category_list = self.request.data['category']
-        except KeyError:
+        except (KeyError, ValueError):
             raise ParseError('Request has no category field')
 
         queryset = WasteCategory.objects.filter(type__in=category_list)
@@ -106,7 +110,7 @@ class LocationDetail(generics.RetrieveUpdateDestroyAPIView):
         try:
             category_list = self.request.data['category']
             queryset = WasteCategory.objects.filter(type__in=category_list)
-        except KeyError:
+        except (KeyError, ValueError):
             update_category = False
 
         obj = self.get_object()

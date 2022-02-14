@@ -4,16 +4,16 @@ import enum
 class Label(enum.Enum):
     battery = 'battery'
     biological = 'biological'
-    brown_glass = 'brown_glass'
+    brown_glass = 'brown glass'
     cardboard = 'cardboard'
     clothes = 'clothes'
-    green_glass = 'green_class'
+    green_glass = 'green glass'
     metal = 'metal'
     paper = 'paper'
     plastic = 'plastic'
     shoes = 'shoes'
     trash = 'trash'
-    white_glass = 'white_glass'
+    white_glass = 'white glass'
 
     @classmethod
     def choices(cls):
@@ -21,7 +21,7 @@ class Label(enum.Enum):
 
     @classmethod
     def to_list(cls):
-        return list(i.name for i in cls)
+        return list(i.value for i in cls)
 
 
 class Area(enum.Enum):
@@ -32,9 +32,9 @@ class Area(enum.Enum):
     Burlington = 'Burlington'
     Caledon = 'Caledon'
     Clarington = 'Clarington'
-    EastGwillimbury = 'EastGwillimbury'
+    EastGwillimbury = 'East Gwillimbury'
     Georgina = 'Georgina'
-    HaltonHills = 'HaltonHills'
+    HaltonHills = 'Halton Hills'
     King = 'King'
     Markham = 'Markham'
     Milton = 'Milton'
@@ -43,13 +43,13 @@ class Area(enum.Enum):
     Oakville = 'Oakville'
     Oshawa = 'Oshawa'
     Pickering = 'Pickering'
-    RichmondHill = 'RichmondHill'
+    RichmondHill = 'Richmond Hill'
     Scugog = 'Scugog'
     Toronto = 'Toronto'
     Uxbridge = 'Uxbridge'
     Vaughan = 'Vaughan'
     Whitby = 'Whitby'
-    WhitchurchStouffville = 'WhitchurchStouffville'
+    WhitchurchStouffville = 'Whitchurch Stouffville'
 
     @classmethod
     def choices(cls):

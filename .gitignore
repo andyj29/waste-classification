@@ -85,3 +85,9 @@ local_settings.py
 
 .env
 db.sqlite3
+
+vgg11_trained_model/
+saved_model/
+new_model.h5
+saved_model.h5
+vgg11_trained_model.h5
