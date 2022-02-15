@@ -59,7 +59,10 @@ class Generator:
 class Utils:
     @staticmethod
     def convert_from_pb_to_h5(pb_folder_path, h5_path):
-        model = tf.keras.models.load_model(pb_folder_path)
+        try:
+            model = tf.keras.models.load_model(pb_folder_path)
+        except OSError:
+            print('Can not open {pb_folder_path} folder')
         print(model.summary())
         tf.keras.models.save_model(model, h5_path)
 
