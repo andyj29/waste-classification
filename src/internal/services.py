@@ -24,9 +24,9 @@ def load_pic(path):
     obj = bucket.Object(s3_path[1])
     file_stream = io.BytesIO()
     obj.download_fileobj(file_stream)
-    img = Image.open(file_stream)
-    resized_img = np.resize(img,(224,224,3))
-    matrix = image.img_to_array(resized_img)/255
+    with Image.open(file_stream) as i:
+        resized_img = np.resize(i,(224,224,3))
+        matrix = image.img_to_array(resized_img)/255
     matrix = np.reshape(matrix,(1, 224, 224, 3))
 
     return matrix
