@@ -25,9 +25,9 @@ def load_pic(path):
     file_stream = io.BytesIO()
     obj.download_fileobj(file_stream)
     with Image.open(file_stream) as i:
-        resized_img = np.resize(i,(224,224,3))
+        resized_img = np.resize(i,(300,300,3))
         matrix = image.img_to_array(resized_img)/255
-    matrix = np.reshape(matrix,(1, 224, 224, 3))
+    matrix = np.reshape(matrix,(1, 300, 300, 3))
 
     return matrix
 
