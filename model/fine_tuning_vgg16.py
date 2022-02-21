@@ -37,7 +37,7 @@ for layer in VGG16_base_model.layers:
 
 opt = SGD(learning_rate=1e-4, momentum=0.9)
 
-model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
+model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['acc'])
 
 es = EarlyStopping(monitor='val_acc', mode='max', verbose=1, patience=20)
 
