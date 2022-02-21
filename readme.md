@@ -1,5 +1,4 @@
-# waste-classifier-2022-hackathon
-### Backend server for our 2022 sustainability hackathon project
+# waste-classification
 
 ### This project is built with:
 ✔️  Keras
