@@ -20,7 +20,7 @@
 
 ❕  Note: Free tier Heroku dyno will sleep after 30 minutes of inactivity which might affect the server response time interval
 
-### ➖ API is available at: [https://sustainability-2022-hacks.herokuapp.com/predict/](https://sustainability-2022-hacks.herokuapp.com/predict/)
+### ➖ API is available at: [https://sustainability-2022-hacks.herokuapp.com/predict/](https://waste-classification-demo.herokuapp.com/predict/)
 
 ### ➖ Request body: 
         
