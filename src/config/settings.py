@@ -86,11 +86,11 @@ WSGI_APPLICATION = 'src.config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'wasteclassifier',
+        'NAME': os.environ.get('DB_NAME'),
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASS'),
         'HOST': os.environ.get('DB_HOST'),
-        'PORT': '5432',
+        'PORT': os.environ.get('DB_PORT'),
     }
 }
 
@@ -150,7 +150,7 @@ AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 
-AWS_STORAGE_BUCKET_NAME = '2022hacks'
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_BUCKET_NAME')
 
 if os.getcwd() == '/app':
     DEBUG = False
